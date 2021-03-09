@@ -34,84 +34,103 @@
     <title>线报站 ٩(๑❛ᴗ❛๑)۶|Little-Spider</title>
 </head>
 <body class="bg-light">
+<div id="activities">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <a class="navbar-brand mr-auto mr-lg-0" href="/">Little-Spider ٩(๑❛ᴗ❛๑)۶</a>
+        <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand mr-auto mr-lg-0" href="#">Little-Spider ٩(๑❛ᴗ❛๑)۶</a>
-    <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
-
-<div class="nav-scroller bg-white shadow-sm">
-    <nav class="nav nav-underline">
-        <a class="nav-link active" href="#">最新线报</a>
-        <a class="nav-link" href="#">
-            优惠券
-            <span class="badge badge-pill bg-light align-text-bottom">27</span>
-        </a>
-        <a class="nav-link" href="#">淘宝</a>
-        <a class="nav-link" href="#">京东</a>
-        <a class="nav-link" href="#">拼多多</a>
-        <a class="nav-link" href="#">服务器</a>
-        <a class="nav-link" href="#">其他</a>
+        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <span class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search_key">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search_btn"
+                    v-on:click="search_click">Search</button>
+        </span>
+        </div>
     </nav>
-</div>
 
-<main role="main" class="container">
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-        <div class="lh-100">
-            <h6 class="mb-0 text-white lh-100">Bootstrap</h6>
-            <small>Since 2011</small>
-        </div>
+    <div class="nav-scroller bg-white shadow-sm">
+        <nav class="nav nav-underline">
+            <a class="nav-link active" href="/">最新线报</a>
+            <a class="nav-link" href="#">
+                优惠券
+                <span class="badge badge-pill bg-light align-text-bottom">27</span>
+            </a>
+            <a class="nav-link" href="#">淘宝</a>
+            <a class="nav-link" href="#">京东</a>
+            <a class="nav-link" href="#">拼多多</a>
+            <a class="nav-link" href="#">服务器</a>
+            <a class="nav-link" href="#">其他</a>
+        </nav>
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="my-3 p-3 bg-white rounded shadow-sm">
-                <h6 class="border-bottom border-gray pb-2 mb-0">菜单</h6>
-            </div>
-            <div class="my-3 p-3 bg-white rounded shadow-sm">
-                <h6 class="border-bottom border-gray pb-2 mb-0">菜单</h6>
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+            <div class="lh-100">
+                <h6 class="mb-0 text-white lh-100">Bootstrap</h6>
+                <small>Since 2011</small>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="my-3 p-3 bg-white rounded shadow-sm">
-                <h6 class="border-bottom border-gray pb-2 mb-0">最新线报</h6>
-                <div class="list-group" id="activities">
-                    <a v-bind:href="item[1]" target="_blank" class="list-group-item list-group-item-action"
-                       v-for="item in news">
-                        <span class="badge badge-pill badge-primary">{{item[2]}}</span>
-                        &nbsp;&nbsp;{{item[0]}}
-                    </a>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">菜单</h6>
+                </div>
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">菜单</h6>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">{{kw}}</h6>
+                    <div class="list-group">
+                        <a v-bind:href="item[1]" target="_blank" class="list-group-item list-group-item-action"
+                           v-for="item in news">
+                            <span class="badge badge-pill badge-primary">{{item[2]}}</span>
+                            &nbsp;&nbsp;{{item[0]}}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+</div>
 
 <script>
     var vm = new Vue({
         el: '#activities',
         data: {
-            news: []
+            news: [],
+            kw: '最新线报'
         },
         methods: {
-            getdata: function () {
-                var url = "http://81.70.46.54:8090/query_new_data";
+            getdata: function (search_key) {
+                // 更新页面 title
+                if (typeof(search_key)==='undefined'){
+                    this.kw = '最新线报'
+                }else{
+                    this.kw = '包含 『' + search_key + '』 的线报'
+                }
+
                 var that = this;
-                axios.get(url).then(function (result) {
+                axios.get('http://81.70.46.54:8090/query_data', {
+                    params: {
+                        kw: search_key
+                    }
+                }).then(function (result) {
                     console.log(result.data.data);
                     that.news = result.data.data;
                 });
+            }, search_click: function () {
+                let search_key_element = $('#search_key');
+                let search_key = search_key_element.val();
+                this.getdata(search_key);
+                // 清空数据
+                search_key_element.val("");
             }
         }, created() {
             // 每隔50秒更新一次
@@ -121,4 +140,6 @@
     })
 </script>
 </body>
+
+
 </html>
